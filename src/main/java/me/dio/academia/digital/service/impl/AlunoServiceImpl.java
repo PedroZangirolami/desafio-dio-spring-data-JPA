@@ -10,6 +10,7 @@ import me.dio.academia.digital.service.IAlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -49,11 +50,29 @@ public class AlunoServiceImpl implements IAlunoService {
 
   @Override
   public Aluno update(Long id, AlunoUpdateForm formUpdate) {
+
+    Aluno aluno = repository.findById(id).get();
+
+    if (aluno != null) {
+      if (formUpdate.getNome() != null) {
+        aluno.setNome(formUpdate.getNome());
+      }
+      if (formUpdate.getBairro() != null) {
+        aluno.setBairro(formUpdate.getBairro());
+      }
+      if (formUpdate.getDataDeNascimento() != null) {
+        aluno.setDataDeNascimento(formUpdate.getDataDeNascimento());
+      }
+
+      return repository.save(aluno);
+    }
+
     return null;
   }
 
   @Override
   public void delete(Long id) {
+    repository.deleteById(id);
   }
 
   @Override
@@ -63,6 +82,10 @@ public class AlunoServiceImpl implements IAlunoService {
 
     return aluno.getAvaliacoes();
 
+  }
+  @Override
+  public List<Aluno> getMaioresDeIdade() {
+    return repository.findMaioresDeIdade();
   }
 
 }

@@ -21,7 +21,6 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
   //@Query("FROM Matricula m WHERE m.aluno.bairro = :bairro ")
   List<Matricula> findAlunosMatriculadosBairro(String bairro);
 
-  //List<Matricula> findByAlunoBairro(String bairro);
 
 
 }

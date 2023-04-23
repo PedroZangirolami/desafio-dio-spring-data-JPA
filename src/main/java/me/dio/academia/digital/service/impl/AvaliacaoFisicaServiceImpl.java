@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AvaliacaoFisicaServiceImpl implements IAvaliacaoFisicaService {
@@ -40,17 +41,23 @@ public class AvaliacaoFisicaServiceImpl implements IAvaliacaoFisicaService {
 
   @Override
   public List<AvaliacaoFisica> getAll() {
-
     return avaliacaoFisicaRepository.findAll();
   }
 
   @Override
   public AvaliacaoFisica update(Long id, AvaliacaoFisicaUpdateForm formUpdate) {
+    Optional<AvaliacaoFisica> avaliacaoFisica = avaliacaoFisicaRepository.findById(id);
+
+    if (avaliacaoFisica.isPresent()){
+      avaliacaoFisica.get().setAltura(formUpdate.getAltura());
+      avaliacaoFisica.get().setPeso(formUpdate.getPeso());
+      avaliacaoFisicaRepository.save(avaliacaoFisica.get());
+    }
     return null;
   }
 
   @Override
   public void delete(Long id) {
-
+    avaliacaoFisicaRepository.deleteById(id);
   }
 }
